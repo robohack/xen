@@ -50,6 +50,7 @@ CONFIG_LIBNL        := @libnl@
 CONFIG_GOLANG       := @golang@
 CONFIG_PYGRUB       := @pygrub@
 CONFIG_LIBFSIMAGE   := @libfsimage@
+CONFIG_TESTS        := @tests@
 
 CONFIG_SYSTEMD      := @systemd@
 XEN_SYSTEMD_DIR     := @SYSTEMD_DIR@
