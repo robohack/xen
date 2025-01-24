@@ -26,7 +26,7 @@ int main(int argc, char **argv)
             { "min-input-size", no_argument, NULL, OPT_MIN_SIZE },
             { 0, 0, 0, 0 }
         };
-        int c = getopt_long_only(argc, argv, "", lopts, NULL);
+        int c = getopt_long(argc, argv, "", lopts, NULL);
 
         if ( c == -1 )
             break;
