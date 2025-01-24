@@ -1442,7 +1442,7 @@ static void afterpoll_internal(libxl__egc *egc, libxl__poller *poller,
 
             revents = afterpoll_check_fd(poller,fds,nfds,
                                          efd->fd,efd->events);
-            if (revents)
+            if (revents & ~POLLHUP)
                 goto found_fd_event;
         }
         /* no ordinary fd events, then */
