@@ -8,16 +8,14 @@
 
 . /etc/rc.subr
 
-DIR=$(dirname "$0")
-. "${DIR}/xen-hotplugpath.sh"
+name="xenwatchdog"
+
+load_rc_config $name
 
 LD_LIBRARY_PATH="${libdir}"
 export LD_LIBRARY_PATH
 
-name="xenwatchdog"
-rcvar=$name
 command="${sbindir}/xenwatchdogd"
 start_cmd="echo Starting ${name}. && PATH=${PATH}:${sbindir} ${command} 30 15"
 
-load_rc_config $name
 run_rc_command "$1"

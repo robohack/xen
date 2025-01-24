@@ -5,14 +5,7 @@
 
 . /etc/rc.subr
 
-DIR=$(dirname "$0")
-. "${DIR}/xen-hotplugpath.sh"
-
-LD_LIBRARY_PATH="${libdir}"
-export LD_LIBRARY_PATH
-
 name="xencommons"
-rcvar=xend
 start_precmd="xen_precmd"
 start_cmd="xen_startcmd"
 stop_cmd="xen_stop"
@@ -20,15 +13,9 @@ status_cmd="xen_status"
 extra_commands="status"
 required_files="/kern/xen/privcmd"
 
-XENCONSOLED_PIDFILE="@XEN_RUN_DIR@/xenconsoled.pid"
-#XENCONSOLED_TRACE="none|guest|hv|all"
-
-XENSTORED_PIDFILE="@XEN_RUN_DIR@/xenstored.pid"
-#XENSTORED_TRACE="@XEN_LOG_DIR@/xenstore-trace.log"
-
 xen_precmd()
 {
-	mkdir -p @XEN_RUN_DIR@/xenstored || exit 1
+	mkdir -p ${XEN_RUN_DIR}/xenstored || exit 1
 }
 
 xen_startcmd()
@@ -41,10 +28,10 @@ xen_startcmd()
 		printf "Starting xenservices: xenstored, xenconsoled."
 		XENSTORED_ARGS=" --pid-file ${XENSTORED_PIDFILE}"
 		if [ -n "${XENSTORED_TRACE}" ]; then
-			XENSTORED_ARGS="${XENSTORED_ARGS} -T @XEN_LOG_DIR@/xenstored-trace.log"
+			XENSTORED_ARGS="${XENSTORED_ARGS} -T ${XENSTORED_TRACE}"
 		fi
 		${sbindir}/xenstored ${XENSTORED_ARGS}
-		while [ $time -lt $timeout ] && ! `${bindir}/xenstore-read -s / >/dev/null 2>&1` ; do
+		while [ $time -lt $timeout ] && ! $(${bindir}/xenstore-read -s / >/dev/null 2>&1) ; do
 			printf "."
 			time=$(($time+1))
 			sleep 1
@@ -94,6 +81,8 @@ xen_status()
 	if test -n "$xenconsoled_pid" -a -n "$xenstored_pid";
 	then
 		echo "xencommons are running as pids $pids."
+		ps -p ${xenstored_pid} -u
+		ps -p ${xenconsoled_pid} -u | sed 1d
 		return 0
 	fi
 	if test -z "$xenconsoled_pid" -a -z "$xenstored_pid";
@@ -115,4 +104,14 @@ xen_status()
 }
 
 load_rc_config $name
+
+LD_LIBRARY_PATH="${libdir}"
+export LD_LIBRARY_PATH
+
+XENCONSOLED_PIDFILE="${XEN_RUN_DIR}/xenconsoled.pid"
+#XENCONSOLED_TRACE="none|guest|hv|all"
+
+XENSTORED_PIDFILE="${XEN_RUN_DIR}/xenstored.pid"
+#XENSTORED_TRACE="${XEN_LOG_DIR}/xenstored-trace.log"
+
 run_rc_command "$1"

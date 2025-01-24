@@ -27,18 +27,12 @@
 
 . /etc/rc.subr
 
-DIR=$(dirname "$0")
-. "${DIR}/xen-hotplugpath.sh"
-
-LD_LIBRARY_PATH="${libdir}"
-export LD_LIBRARY_PATH
-
 name="xendomains"
-ctl_command="${sbindir}/xl"
 start_cmd="xendomains_start"
 stop_cmd="xendomains_stop"
 list_cmd="xendomains_list"
-extra_commands="list"
+status_cmd="xendomains_status"
+extra_commands="list status"
 required_files="/kern/xen/privcmd"
 
 xendomains_start()
@@ -77,6 +71,10 @@ xendomains_list() {
 		(FNR <= 2) { next }
 		($5 !~ /s/) { s = s " " $1 }
 		END { sub(" *", "", s); print s }'
+}
+
+xendomains_status() {
+	${ctl_command} list
 }
 
 xendomains_stop()
@@ -125,6 +123,11 @@ xendomains_stop()
 }
 
 load_rc_config $name
+
+LD_LIBRARY_PATH="${libdir}"
+export LD_LIBRARY_PATH
+
+ctl_command="${sbindir}/xl"
 
 : ${xendomains_config="${XEN_CONFIG_DIR}/%s"}
 : ${xendomains_prehook="${XEN_CONFIG_DIR}/%s-pre"}
