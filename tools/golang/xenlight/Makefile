@@ -20,7 +20,7 @@ GOXL_GEN_FILES = types.gen.go helpers.gen.go
 $(subst .gen.,.%.,$(GOXL_GEN_FILES)): gengotypes.py $(LIBXL_SRC_DIR)/libxl_types.idl $(LIBXL_SRC_DIR)/idl.py
 	LIBXL_SRC_DIR=$(LIBXL_SRC_DIR) $(PYTHON) gengotypes.py $(LIBXL_SRC_DIR)/libxl_types.idl $(@D)/types.gen.go $(@D)/helpers.gen.go
 
-# Go will do its own dependency checking, and not actuall go through
+# Go will do its own dependency checking, and not actually go through
 # with the build if none of the input files have changed.
 #
 # NB that because the users of this library need to be able to
