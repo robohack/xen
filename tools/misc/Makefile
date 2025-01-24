@@ -30,6 +30,7 @@ INSTALL_SBIN                   += xenhypfs
 INSTALL_SBIN                   += xenlockprof
 INSTALL_SBIN                   += xenperf
 INSTALL_SBIN                   += xenpm
+# XXX daemon programs are supposed to be installed in $(LIBEXEC_BIN)
 INSTALL_SBIN                   += xenwatchdogd
 INSTALL_SBIN                   += xen-access
 INSTALL_SBIN                   += xen-livepatch
