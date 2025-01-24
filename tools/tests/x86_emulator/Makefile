@@ -192,7 +192,7 @@ $(addsuffix .h,$(TESTCASES)): %.h: %.c testcase.mk Makefile
 		flavor=$$(echo $${cflags} | sed -e 's, .*,,' -e 'y,-=,__,') ; \
 		(echo 'static const unsigned int __attribute__((section(".test, \"ax\", @progbits #")))' \
 		      "$${prefix}_$(arch)$${flavor}[] = {"; \
-		 od -v -t x $*.bin | sed -e 's/^[0-9]* /0x/' -e 's/ /, 0x/g' -e 's/$$/,/'; \
+		 od -v -t x $*.bin | sed -E -e '/^[0-9]* *$$/d' -e 's/^[0-9]* +/0x/' -e 's/ +([0-9a-f])/, 0x\1/g' -e 's/$$/,/'; \
 		 echo "};"; \
 		 echo "asm(\".type $${prefix}_$(arch)$${flavor}, STT_NOTYPE;\");"; \
 		 echo "asm(\".type $${prefix}_$(arch)$${flavor}, STT_FUNC;\");"; \
@@ -211,7 +211,7 @@ $(addsuffix -opmask.h,$(OPMASK)): %.h: opmask.S testcase.mk Makefile
 		flavor=$$(echo $${cflags} | sed -e 's, .*,,' -e 'y,-=,__,') ; \
 		(echo 'static const unsigned int __attribute__((section(".test, \"ax\", @progbits #")))' \
 		      "$${prefix}_$(arch)$${flavor}[] = {"; \
-		 od -v -t x $*.bin | sed -e 's/^[0-9]* /0x/' -e 's/ /, 0x/g' -e 's/$$/,/'; \
+		 od -v -t x $*.bin | sed -E -e '/^[0-9]* *$$/d' -e 's/^[0-9]* +/0x/' -e 's/ +([0-9a-f])/, 0x\1/g' -e 's/$$/,/'; \
 		 echo "};"; \
 		 echo "asm(\".type $${prefix}_$(arch)$${flavor}, STT_NOTYPE;\");"; \
 		 echo "asm(\".type $${prefix}_$(arch)$${flavor}, STT_FUNC;\");"; \
