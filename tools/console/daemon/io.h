@@ -20,6 +20,8 @@
 #ifndef CONSOLED_IO_H
 #define CONSOLED_IO_H
 
+extern volatile int log_reload;
+
 void handle_io(void);
 
 #endif
