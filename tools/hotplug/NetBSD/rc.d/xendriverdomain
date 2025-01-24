@@ -7,19 +7,13 @@
 
 . /etc/rc.subr
 
-DIR=$(dirname "$0")
-. "${DIR}/xen-hotplugpath.sh"
-
-LD_LIBRARY_PATH="${libdir}"
-export LD_LIBRARY_PATH
-
 name="xendriverdomain"
 start_precmd="xendriverdomain_precmd"
 start_cmd="xendriverdomain_startcmd"
 stop_cmd="xendriverdomain_stop"
 extra_commands=""
 
-XLDEVD_PIDFILE="@XEN_RUN_DIR@/xldevd.pid"
+XLDEVD_PIDFILE="${XEN_RUN_DIR}/xldevd.pid"
 
 xendriverdomain_precmd()
 {
@@ -46,4 +40,8 @@ xendriverdomain_stop()
 }
 
 load_rc_config $name
+
+LD_LIBRARY_PATH="${libdir}"
+export LD_LIBRARY_PATH
+
 run_rc_command "$1"
