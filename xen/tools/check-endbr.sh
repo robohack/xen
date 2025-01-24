@@ -13,6 +13,18 @@
 #
 set -e
 
+filesize ()
+{
+	# stat(1) is not standardized:
+	#
+	# GNU:	stat -c '%s'
+	# BSD:	stat -f '%z'
+	#
+	# but since perl is required for the build....
+	#
+	perl -e '@a = stat(shift); print $a[7] . "\n";' $@
+}
+
 # Pretty-print parameters a little for message
 MSG_PFX="${0##*/} ${1##*/}"
 
@@ -96,7 +108,7 @@ eval $(${OBJDUMP} -j .text $1 -h |
 
 ${OBJCOPY} -j .text $1 -O binary $TEXT_BIN
 
-bin_sz=$(stat -c '%s' $TEXT_BIN)
+bin_sz=$(filesize $TEXT_BIN)
 [ "$bin_sz" -ge $(((1 << 28) - $vma_lo)) ] &&
     { echo "$MSG_PFX Error: .text offsets must not exceed 256M" >&2; exit 1; }
 
@@ -116,8 +128,8 @@ fi | $AWK -F':' '{printf "%s%07x\n", "'$vma_hi'", int('$((0x$vma_lo))') + $1}' >
 wait
 
 # Sanity check $VALID and $ALL, in case the string parsing bitrots
-val_sz=$(stat -c '%s' $VALID)
-all_sz=$(stat -c '%s' $ALL)
+val_sz=$(filesize $VALID)
+all_sz=$(filesize $ALL)
 [ "$val_sz" -eq 0 ]         && { echo "$MSG_PFX Error: Empty valid-addrs" >&2; exit 1; }
 [ "$all_sz" -eq 0 ]         && { echo "$MSG_PFX Error: Empty all-addrs" >&2; exit 1; }
 [ "$all_sz" -lt "$val_sz" ] && { echo "$MSG_PFX Error: More valid-addrs than all-addrs" >&2; exit 1; }
