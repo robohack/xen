@@ -1308,6 +1308,8 @@ static void p9_read(struct ring *ring, struct p9_header *hdr)
 
         while ( len != 0 )
         {
+            long curpos = telldir(fidp->data);
+
             errno = 0;
             dirent = readdir(fidp->data);
             if ( !dirent )
@@ -1321,7 +1323,7 @@ static void p9_read(struct ring *ring, struct p9_header *hdr)
             fill_p9_stat(device, &p9s, &st, dirent->d_name);
             if ( p9s.size + sizeof(p9s.size) > len )
             {
-                seekdir(fidp->data, dirent->d_off);
+		seekdir(fidp->data, curpos);
                 break;
             }
             fill_buffer_at(&buf, "s", &p9s);
