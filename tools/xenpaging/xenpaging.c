@@ -180,7 +180,7 @@ static int xenpaging_get_tot_pages(struct xenpaging *paging)
 
 static void *init_page(void)
 {
-    void *buffer;
+    void *buffer = NULL;
 
     /* Allocated page memory */
     errno = posix_memalign(&buffer, XC_PAGE_SIZE, XC_PAGE_SIZE);
