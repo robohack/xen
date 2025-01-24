@@ -2653,7 +2653,7 @@ static inline void libxl_cpuid_set(libxl_ctx *ctx __attribute__((unused)),
 /*
  * Functions for allowing users of libxl to store private data
  * relating to a domain.  The data is an opaque sequence of bytes and
- * is not interpreted or used by libxl.
+ * is not interpreted or used by libxl (except "libxl-json").
  *
  * Data is indexed by the userdata userid, which is a short printable
  * ASCII string.  The following list is a registry of userdata userids

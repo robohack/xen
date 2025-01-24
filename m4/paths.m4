@@ -10,7 +10,7 @@ if test "$localstatedir" = '${prefix}/var' ; then
     localstatedir=/var
 fi
 
-dnl expand exec_prefix or it will endup in substituted variables
+dnl expand exec_prefix or it will end up in substituted variables
 bindir=`eval echo $bindir`
 sbindir=`eval echo $sbindir`
 libdir=`eval echo $libdir`
@@ -112,7 +112,7 @@ if test "$libexecdir" = '${exec_prefix}/libexec' ; then
          ;;
     esac
 fi
-dnl expand exec_prefix or it will endup in substituted variables
+dnl expand $libexecdir or it will end up in substituted variables
 LIBEXEC=`eval echo $libexecdir/$libexec_subdir`
 AC_SUBST(LIBEXEC)
 
