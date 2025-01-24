@@ -141,7 +141,7 @@ module Unixext = struct
   let pidfile_write filename =
     let fd = Unix.openfile filename
         [ Unix.O_WRONLY; Unix.O_CREAT; Unix.O_TRUNC; ]
-        0o640 in
+        0o644 in
     finally
       (fun () ->
          let pid = Unix.getpid () in

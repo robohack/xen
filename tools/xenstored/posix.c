@@ -48,7 +48,7 @@ static void write_pidfile(const char *pidfile)
 	int len;
 	int fd;
 
-	fd = open(pidfile, O_RDWR | O_CREAT, 0600);
+	fd = open(pidfile, O_RDWR | O_CREAT, 0644);
 	if (fd == -1)
 		barf_perror("Opening pid file %s", pidfile);
 
