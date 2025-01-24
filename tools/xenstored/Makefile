@@ -28,6 +28,9 @@ distclean: clean
 TAGS:
 	etags `find . -name '*.[ch]'`
 
+# XXX daemon programs are supposed to be installed in $(LIBEXEC_BIN) --
+# xenstored cannot normally be run from the command line and it cannot be
+# restarted once stopped so should not be in root's $PATH!
 .PHONY: install
 install: all
 	$(INSTALL_DIR) $(DESTDIR)$(sbindir)

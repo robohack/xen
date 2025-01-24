@@ -1,6 +1,6 @@
 # default xenstored config
 
-# Where the pid file is stored
+# Where the pid file is stored (XXX why isn't this just in paths.ml?)
 pid-file = @XEN_RUN_DIR@/xenstored.pid
 
 # Randomly failed a transaction with EAGAIN. Used for testing Xs user
@@ -83,5 +83,6 @@ persistent = false
 # Define the interval in seconds, set to negative to disable.
 # ring-scan-interval = 20
 
+# (XXX why aren't these just in paths.ml?)
 xenstored-kva = @XENSTORED_KVA@
 xenstored-port = @XENSTORED_PORT@

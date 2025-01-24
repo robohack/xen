@@ -34,6 +34,14 @@ if test "x$sysconfdir" = 'x${prefix}/etc' ; then
     esac
 fi
 
+dnl only Linux insists on this unnecessary subdirectory in /var
+var_lib=''
+case "$host_os" in
+     *linux*)
+     var_lib='lib/'
+     ;;
+esac
+
 CONFIG_DIR=$sysconfdir
 AC_SUBST(CONFIG_DIR)
 
@@ -41,9 +49,11 @@ XEN_CONFIG_DIR=$CONFIG_DIR/xen
 AC_SUBST(XEN_CONFIG_DIR)
 AC_DEFINE_UNQUOTED([XEN_CONFIG_DIR], ["$XEN_CONFIG_DIR"], [Xen's config dir])
 
+dnl xxx the default should show the host-specific default
 AC_ARG_WITH([initddir],
     AS_HELP_STRING([--with-initddir=DIR],
-    [Path to directory with sysv runlevel scripts. [SYSCONFDIR/init.d]]),
+    [Path to directory with sysv runlevel scripts.
+     [SYSCONFDIR/<system-specific-init-dir>]]),
     [initddir_path=$withval],
     [case "$host_os" in
          *linux*)
@@ -53,11 +63,15 @@ AC_ARG_WITH([initddir],
              initddir_path=$sysconfdir/init.d
          fi
          ;;
-         *)
+         *bsd*)
          initddir_path=$sysconfdir/rc.d
+         ;;
+         *)
+         initddir_path=$sysconfdir/init.d
          ;;
      esac])
 
+dnl CONFIG_LEAF_DIR is only used on GNU/Linux systems
 AC_ARG_WITH([sysconfig-leaf-dir],
     AS_HELP_STRING([--with-sysconfig-leaf-dir=SUBDIR],
     [Name of subdirectory in /etc to store runtime options for runlevel
@@ -71,6 +85,8 @@ AC_SUBST(CONFIG_LEAF_DIR)
 
 dnl autoconf docs suggest to use a "package name" subdir. We make it
 dnl configurable for the benefit of those who want e.g. xen-X.Y instead.
+dnl this is unconventional in the BSD world, and generally not useful, but for
+dnl consistency and historical practice it remains....
 AC_ARG_WITH([libexec-leaf-dir],
     AS_HELP_STRING([--with-libexec-leaf-dir=SUBDIR],
     [Name of subdirectory in libexecdir to use.]),
@@ -88,9 +104,9 @@ AC_DEFINE_UNQUOTED([XEN_SCRIPT_DIR], ["$XEN_SCRIPT_DIR"], [Xen's script dir])
 
 AC_ARG_WITH([xen-dumpdir],
     AS_HELP_STRING([--with-xen-dumpdir=DIR],
-    [Path to directory for domU crash dumps. [LOCALSTATEDIR/lib/xen/dump]]),
+    [Path to directory for domU crash dumps. [LOCALSTATEDIR/[lib/]xen/dump]]),
     [xen_dumpdir_path=$withval],
-    [xen_dumpdir_path=$localstatedir/lib/xen/dump])
+    [xen_dumpdir_path=$localstatedir/${var_lib}xen/dump])
 
 AC_ARG_WITH([rundir],
     AS_HELP_STRING([--with-rundir=DIR],
@@ -104,10 +120,10 @@ AC_ARG_WITH([debugdir],
     [debugdir_path=$withval],
     [debugdir_path=$prefix/lib/debug])
 
+dnl XXX Solaris would likely be different, if fully supported
 if test "$libexecdir" = '${exec_prefix}/libexec' ; then
     case "$host_os" in
-         *netbsd*) ;;
-         *)
+         *linux*)
          libexecdir='${exec_prefix}/lib'
          ;;
     esac
@@ -120,8 +136,10 @@ dnl These variables will be substituted in various .in files
 LIBEXEC_BIN=${LIBEXEC}/bin
 AC_SUBST(LIBEXEC_BIN)
 AC_DEFINE_UNQUOTED([LIBEXEC_BIN], ["$LIBEXEC_BIN"], [Xen's libexec path])
+dnl LIBEXEC_LIB is only used with qemu configure
 LIBEXEC_LIB=${LIBEXEC}/lib
 AC_SUBST(LIBEXEC_LIB)
+dnl LIBEXEC_INC is only used with qemu configure
 LIBEXEC_INC=${LIBEXEC}/include
 AC_SUBST(LIBEXEC_INC)
 XENFIRMWAREDIR=${LIBEXEC}/boot
@@ -140,9 +158,9 @@ XEN_RUN_STORED=$rundir_path/xenstored
 AC_SUBST(XEN_RUN_STORED)
 AC_DEFINE_UNQUOTED([XEN_RUN_STORED], ["$XEN_RUN_STORED"], [Xenstore's runstate path])
 
-XEN_LIB_DIR=$localstatedir/lib/xen
+XEN_LIB_DIR='${localstatedir}/${var_lib}xen'
 AC_SUBST(XEN_LIB_DIR)
-AC_DEFINE_UNQUOTED([XEN_LIB_DIR], ["$XEN_LIB_DIR"], [Xen's lib dir])
+AC_DEFINE_UNQUOTED([XEN_LIB_DIR], ["$XEN_LIB_DIR"], [Xen's localstate dir])
 
 SHAREDIR=$prefix/share
 AC_SUBST(SHAREDIR)
@@ -151,14 +169,13 @@ INITD_DIR=$initddir_path
 AC_SUBST(INITD_DIR)
 
 case "$host_os" in
-*freebsd*) XEN_LOCK_DIR=$localstatedir/lib ;;
-*netbsd*) XEN_LOCK_DIR=$rundir_path ;;
-*) XEN_LOCK_DIR=$localstatedir/lock ;;
+*linux*) XEN_LOCK_DIR=$localstatedir/lock ;;
+*) XEN_LOCK_DIR=$rundir_path/xen ;;
 esac
 AC_SUBST(XEN_LOCK_DIR)
 AC_DEFINE_UNQUOTED([XEN_LOCK_DIR], ["$XEN_LOCK_DIR"], [Xen's lock dir])
 
-XEN_PAGING_DIR=$localstatedir/lib/xen/xenpaging
+XEN_PAGING_DIR=$rundir_path/${var_lib}xen/xenpaging
 AC_SUBST(XEN_PAGING_DIR)
 
 XEN_DUMP_DIR=$xen_dumpdir_path
@@ -169,14 +186,20 @@ DEBUG_DIR=$debugdir_path
 AC_SUBST(DEBUG_DIR)
 ])
 
+dnl only used for default value in tools/ocaml/xenstored/oxenstored.conf
+dnl xxx why can't .ml code also use equivalent of system ifdefs?   "system"???
 case "$host_os" in
 *freebsd*) XENSTORED_KVA=/dev/xen/xenstored ;;
+*netbsd*) XENSTORED_KVA=/dev/xsd_kva ;;
 *) XENSTORED_KVA=/proc/xen/xsd_kva ;;
 esac
 AC_SUBST(XENSTORED_KVA)
 
+dnl only used for default value in tools/ocaml/xenstored/oxenstored.conf
+dnl xxx why can't .ml code also use equivalent of system ifdefs?  "system"???
 case "$host_os" in
 *freebsd*) XENSTORED_PORT=/dev/xen/xenstored ;;
+*netbsd*) XENSTORED_PORT=/kern/xen/xsd_port ;;
 *) XENSTORED_PORT=/proc/xen/xsd_port ;;
 esac
 AC_SUBST(XENSTORED_PORT)
