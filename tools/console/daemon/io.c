@@ -60,7 +60,6 @@
 /* Duration of each time period in ms */
 #define RATE_LIMIT_PERIOD 200
 
-extern int log_reload;
 extern int log_guest;
 extern int log_hv;
 extern int log_time_hv;

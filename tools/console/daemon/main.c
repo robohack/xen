@@ -32,7 +32,7 @@
 #include "utils.h"
 #include "io.h"
 
-int log_reload = 0;
+volatile int log_reload = 0;
 int log_guest = 0;
 int log_hv = 0;
 int log_time_hv = 0;
