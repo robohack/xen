@@ -25,6 +25,9 @@ OBJS-$(CONFIG_NetBSD) += xenstat_netbsd.o
 OBJS-$(CONFIG_FreeBSD) += xenstat_freebsd.o
 
 LDLIBS-y += -lyajl
+ifeq ($(XEN_TOOLS_RPATH),y)
+LDLIBS-y += -Wl,-R,$(PREPEND_LIB) -Wl,-rpath-link,$(PREPEND_LIB)
+endif
 LDLIBS-$(CONFIG_SunOS) += -lkstat
 LDLIBS += $(LDLIBS-y)
 
