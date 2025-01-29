@@ -426,9 +426,6 @@ CFLAGS += $(EXTRA_CFLAGS_XEN_CORE)
 #  -flto makes no sense and annoys clang
 AFLAGS += $(filter-out -std=gnu% -flto,$(CFLAGS)) $(AFLAGS-y)
 
-# LDFLAGS are only passed directly to $(LD)
-LDFLAGS += $(LDFLAGS_DIRECT) $(LDFLAGS-y)
-
 ifeq ($(CONFIG_UBSAN),y)
 CFLAGS_UBSAN := -fsanitize=undefined
 else
@@ -463,7 +460,7 @@ include $(srctree)/arch/$(SRCARCH)/arch.mk
 # define new variables to avoid the ones defined in Config.mk
 export XEN_CFLAGS := $(CFLAGS)
 export XEN_AFLAGS := $(AFLAGS)
-export XEN_LDFLAGS := $(LDFLAGS)
+export XEN_LDFLAGS := $(LDFLAGS_DIRECT) $(LDFLAGS-y)
 export CFLAGS_UBSAN
 
 endif # need-config
