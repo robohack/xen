@@ -301,7 +301,7 @@ Change the domain name of a domain specified by I<domain-id> to I<new-name>.
 Dumps the virtual machine's memory for the specified domain to the
 I<filename> specified, without pausing the domain.  The dump file will
 be written to a distribution specific directory for dump files, for example:
-@XEN_DUMP_DIR@/dump.
+@XEN_DUMP_DIR@/<filename>.
 
 =item B<help> [I<--long>]
 
@@ -597,7 +597,7 @@ See the corresponding option of the I<create> subcommand.
 
 =item B<-N> I<netbufscript>
 
-Use <netbufscript> to setup network buffering instead of the
+Use <netbufscript> to set up network buffering instead of the
 default script (@XEN_SCRIPT_DIR@/remus-netbuf-setup).
 
 =item B<-F>
