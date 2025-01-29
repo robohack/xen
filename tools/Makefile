@@ -247,6 +247,7 @@ subdir-all-qemu-xen-dir: qemu-xen-dir-find
 		--bindir=$(LIBEXEC_BIN) \
 		--datadir=$(SHAREDIR)/qemu-xen \
 		--localstatedir=$(localstatedir) \
+		--disable-opengl \
 		--docdir=$(LIBEXEC)/share/doc \
 		--mandir=$(LIBEXEC)/share/man \
 		--libexecdir=$(LIBEXEC)/libexec \
