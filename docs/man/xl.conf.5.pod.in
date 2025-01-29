@@ -85,7 +85,7 @@ Default: C<1>
 Sets the path to the lock file used by xl to serialise certain
 operations (primarily domain creation).
 
-Default: C</var/lock/xl>
+Default: C<@XEN_LOCK_DIR@/xl>
 
 =item B<max_grant_frames=NUMBER>
 
