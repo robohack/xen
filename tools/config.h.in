@@ -146,7 +146,7 @@
 /* Xen's dump directory */
 #undef XEN_DUMP_DIR
 
-/* Xen's lib dir */
+/* Xen's localstate dir */
 #undef XEN_LIB_DIR
 
 /* Xen's lock dir */
