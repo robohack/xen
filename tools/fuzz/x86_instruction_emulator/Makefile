@@ -53,13 +53,13 @@ x86-insn-fuzzer.a: $(OBJS) cpuid.o
 	$(AR) rc $@ $^
 
 afl-harness: afl-harness.o $(OBJS) cpuid.o wrappers.o
-	$(CC) $(CFLAGS) $(addprefix -Wl$(comma)--wrap=,$(WRAPPED)) $^ -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $(addprefix -Wl$(comma)--wrap=,$(WRAPPED)) $^ -o $@
 
 afl-harness-cov: afl-harness-cov.o $(patsubst %.o,%-cov.o,$(OBJS)) cpuid.o wrappers.o
-	$(CC) $(CFLAGS) $(GCOV_FLAGS) $(addprefix -Wl$(comma)--wrap=,$(WRAPPED)) $^ -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $(GCOV_FLAGS) $(addprefix -Wl$(comma)--wrap=,$(WRAPPED)) $^ -o $@
 
 libfuzzer-harness: $(OBJS) cpuid.o wrappers.o
-	$(CC) $(CFLAGS) $(LIB_FUZZING_ENGINE) -fsanitize=fuzzer $(addprefix -Wl$(comma)--wrap=,$(WRAPPED)) $^ -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $(LIB_FUZZING_ENGINE) -fsanitize=fuzzer $(addprefix -Wl$(comma)--wrap=,$(WRAPPED)) $^ -o $@
 
 # Common targets
 .PHONY: all

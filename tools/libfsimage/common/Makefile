@@ -4,8 +4,8 @@ include $(XEN_ROOT)/tools/libfsimage/common.mk
 MAJOR := $(shell $(XEN_ROOT)/version.sh $(XEN_ROOT)/xen/Makefile)
 MINOR = 0
 
-LDFLAGS-$(CONFIG_SunOS) = -Wl,-M -Wl,mapfile-SunOS
-LDFLAGS-$(CONFIG_Linux) = -Wl,mapfile-GNU
+LDFLAGS-$(CONFIG_SunOS) += -Wl,-M -Wl,mapfile-SunOS
+LDFLAGS-$(CONFIG_Linux) += -Wl,mapfile-GNU
 LDFLAGS += $(LDFLAGS-y)
 
 CFLAGS += $(PTHREAD_CFLAGS)

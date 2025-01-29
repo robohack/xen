@@ -3,7 +3,7 @@ XEN_ROOT = $(CURDIR)/../..
 include $(XEN_ROOT)/tools/Rules.mk
 
 PY_CFLAGS = $(CFLAGS) $(PY_NOOPT_CFLAGS)
-PY_LDFLAGS = $(SHLIB_LDFLAGS) $(APPEND_LDFLAGS)
+PY_LDFLAGS = $(SHLIB_LDFLAGS) $(LDFLAGS) $(APPEND_LDFLAGS)
 INSTALL_LOG = build/installed_files.txt
 
 setup.py = CC="$(CC)" CFLAGS="$(PY_CFLAGS)" LDSHARED="$(CC)" LDFLAGS="$(PY_LDFLAGS)" \
