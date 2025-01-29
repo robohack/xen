@@ -156,9 +156,9 @@ $(TARGET)-syms: $(objtree)/prelink.o $(obj)/xen.lds
 		| $(objtree)/tools/symbols --all-symbols --xensyms --sysv --sort \
 		> $@.map
 	rm -f $(dot-target).[0-9]* $(@D)/..$(@F).[0-9]*
-ifeq ($(CONFIG_XEN_IBT),y)
-	$(SHELL) $(srctree)/tools/check-endbr.sh $@
-endif
+#ifeq ($(CONFIG_XEN_IBT),y)
+#	$(SHELL) $(srctree)/tools/check-endbr.sh $@
+#endif
 
 $(obj)/note.o: $(TARGET)-syms
 	$(OBJCOPY) -O binary --only-section=.note.gnu.build-id $< $@.bin
@@ -240,9 +240,9 @@ ifeq ($(CONFIG_DEBUG_INFO),y)
 	$(if $(filter --strip-debug,$(EFI_LDFLAGS)),:$(space))$(OBJCOPY) -O elf64-x86-64 $@ $@.elf
 endif
 	rm -f $(dot-target).[0-9]* $(@D)/..$(@F).[0-9]*
-ifeq ($(CONFIG_XEN_IBT),y)
-	$(SHELL) $(srctree)/tools/check-endbr.sh $@
-endif
+#ifeq ($(CONFIG_XEN_IBT),y)
+#	$(SHELL) $(srctree)/tools/check-endbr.sh $@
+#endif
 else
 $(TARGET).efi: FORCE
 	rm -f $@

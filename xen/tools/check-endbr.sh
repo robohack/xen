@@ -1,5 +1,8 @@
 #!/bin/sh
 #
+#	XXX this script doesn't seem very portable -- I cannot get reliable
+#	results on NetBSD.
+#
 # Usage ./$0 xen-syms
 #
 # When CET-IBT (Control-flow Enforcement Technology, Indirect Branch Tracking)
