@@ -1230,10 +1230,12 @@ int p2m_add_identity_entry(struct domain *d, unsigned long gfn_l,
             ret = 0;
         else
             ret = -EBUSY;
-        printk(XENLOG_G_WARNING
+	if (gfn_l != mfn_x(mfn)) {
+            printk(XENLOG_G_WARNING
                "Cannot setup identity map d%d:%lx,"
                " gfn already mapped to %lx.\n",
                d->domain_id, gfn_l, mfn_x(mfn));
+        }
     }
 
     gfn_unlock(p2m, gfn, 0);
