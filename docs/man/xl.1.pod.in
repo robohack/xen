@@ -266,6 +266,24 @@ using a hardware domain separated from domain 0.
 
 =back
 
+=item B<devd> [I<OPTIONS>]
+
+Start a device events handler daemon, for use in a I<driver> domain.
+
+B<OPTIONS>
+
+=over 4
+
+=item I<-F>
+
+Run in the foreground.
+
+=item I<-p pidfile>, B<--pidfile=pidfile>
+
+Store the background child process ID in I<pidfile>.
+
+=back
+
 =item B<domid> I<domain-name>
 
 Converts a domain name to a domain id.
