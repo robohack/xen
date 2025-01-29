@@ -86,7 +86,8 @@ bits of randomness than using the Xen OUI.
 =head2 bridge
 
 Specifies the name of the network bridge which this VIF should be
-added to. The default is C<xenbr0>. The bridge must be configured using
+added to. The default is C<xenbr0> (which can be changed with C<vif.default.bridge> in C<@XEN_CONFIG_DIR@>/xl.conf>).
+The bridge must be configured using
 your distribution's network configuration tools. See the L<wiki|https://wiki.xenproject.org/wiki/Network_Configuration_Examples_(Xen_4.1%2B)>
 for guidance and examples.
 
@@ -168,13 +169,13 @@ number. Likewise the default tap name is C<vifDOMID.DEVID-emu>.
 =head2 script
 
 Specifies the hotplug script to run to configure this device (e.g. to
-add it to the relevant bridge). Defaults to
-C<@XEN_SCRIPT_DIR@/vif-bridge> but can be set to any script. Some example
+add it to the relevant bridge). The default is
+C<@XEN_SCRIPT_DIR@/vif-bridge> (which can be changed with C<vif.default.bridge> in C<@XEN_CONFIG_DIR@>/xl.conf>) but can be set to any script. Some example
 scripts are installed in C<@XEN_SCRIPT_DIR@>.
 
 Note on NetBSD HVM guests will ignore the script option for tap
 (emulated) interfaces and always use
-C<XEN_SCRIPT_DIR/qemu-ifup> to configure the interface in bridged mode.
+C<@XEN_SCRIPT_DIR@/qemu-ifup> to configure the interface in bridged mode.
 
 =head2 ip
 
