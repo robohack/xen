@@ -83,7 +83,7 @@ endif
 
 # Flags for linking recursive dependencies of Xen libraries in $(1)
 define xenlibs-rpath
-    $(addprefix -Wl$(comma)-rpath-link=$(XEN_ROOT)/tools/libs/,$(call xenlibs-dependencies,$(1)))
+    $(addprefix -Wl$(comma)-rpath-link$(comma)$(XEN_ROOT)/tools/libs/,$(call xenlibs-dependencies,$(1)))
 endef
 
 # Provide a path for each library in $(1)
