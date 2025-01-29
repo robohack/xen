@@ -39,12 +39,12 @@ Most B<xl> operations rely upon B<xenstored> and B<xenconsoled>: make
 sure you start the script B</etc/init.d/xencommons> at boot time to
 initialize all the daemons needed by B<xl>.
 
-=item setup a B<xenbr0> bridge in dom0
+=item set up a network bridge interface in dom0
 
-In the most common network configuration, you need to setup a bridge in dom0
-named B<xenbr0> in order to have a working network in the guest domains.
-Please refer to the documentation of your Linux distribution to know how to
-setup the bridge.
+In the most common network configuration, you need to set up a bridge in dom0
+(named B<xenbr0> in order to have a working network in the guest domains.
+Please refer to the documentation of your system distribution to learn how to
+set up a bridge interface.
 
 =item B<autoballoon>
 
