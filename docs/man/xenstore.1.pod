@@ -50,3 +50,10 @@ Add or modify keys and values.
 
 Send bugs to xen-devel@lists.xenproject.org, see
 https://wiki.xenproject.org/wiki/Reporting_Bugs_against_Xen_Project on how to send bug reports.
+
+# N.B.:  the following are referenced here by xenstore(1), but do not yet exist
+#
+#        xenstore‐exists(1)
+#        xenstore‐list(1)
+#        xenstore‐rm(1)
+#        xenstore‐watch(1)
