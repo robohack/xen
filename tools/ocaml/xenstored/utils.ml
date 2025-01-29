@@ -86,7 +86,7 @@ let read_file_single_integer filename =
   let buf = Bytes.make 20 '\000' in
   let sz = Unix.read fd buf 0 20 in
   Unix.close fd;
-  int_of_string (Bytes.sub_string buf 0 sz)
+  int_of_string (String.trim (Bytes.sub_string buf 0 sz))
 
 (* @path may be guest data and needs its length validating.  @connection_path
  * is generated locally in xenstored and always of the form "/local/domain/$N/" *)
