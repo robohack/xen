@@ -37,7 +37,7 @@ $(H_SRC): $(ACPI_BUILD_DIR)/%.h: %.asl
 	rm -f $(addprefix $(ACPI_BUILD_DIR)/, $*.aml $*.hex)
  
 $(MK_DSDT): mk_dsdt.c
-	$(HOSTCC) $(HOSTCFLAGS) $(MKDSDT_CFLAGS-y) $(CFLAGS_xeninclude) -D__XEN_TOOLS__ -o $@ mk_dsdt.c
+	$(HOSTCC) $(HOSTCFLAGS) $(MKDSDT_CFLAGS-y) $(CFLAGS_xeninclude) -D__XEN_TOOLS__ $(HOSTLDFLAGS) -o $@ mk_dsdt.c
 
 $(ACPI_BUILD_DIR)/dsdt_anycpu_qemu_xen.asl: dsdt.asl dsdt_acpi_info.asl $(MK_DSDT)
 	# Remove last bracket

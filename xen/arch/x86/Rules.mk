@@ -8,3 +8,5 @@ object_label_flags = '-D__OBJECT_LABEL__=$(subst /,$$,$(subst -,_,$@))'
 endif
 c_flags += $(object_label_flags) $(CFLAGS_stack_boundary)
 a_flags += $(object_label_flags) $(CFLAGS_stack_boundary)
+
+c_flags += $(EXTRA_CFLAGS)
