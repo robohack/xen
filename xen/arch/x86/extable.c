@@ -223,7 +223,8 @@ unsigned long asmlinkage search_pre_exception_table(struct cpu_user_regs *regs)
         __start___pre_ex_table, __stop___pre_ex_table, addr);
     if ( fixup )
     {
-        dprintk(XENLOG_INFO, "Pre-exception: %p -> %p\n", _p(addr), _p(fixup));
+/* xxx silence noisy debug output */
+//        dprintk(XENLOG_INFO, "Pre-exception: %p -> %p\n", _p(addr), _p(fixup));
         perfc_incr(exception_fixed);
     }
     return fixup;
