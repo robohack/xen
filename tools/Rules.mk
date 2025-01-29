@@ -124,10 +124,27 @@ endef
 
 $(foreach lib,$(LIBS_LIBS),$(eval $(call LIB_defs,$(lib))))
 
+LDLIBS_libxenevtchn +=  $(LDLIBS_libxentoolcore)
+
+LDLIBS_libxengnttab +=  $(LDLIBS_libxentoollog) $(LDLIBS_libxentoolcore)
+
+LDLIBS_libxencall +=  $(LDLIBS_libxentoolcore)
+
+LDLIBS_libxenforeignmemory += $(LDLIBS_libxentoolcore)
+
+LDLIBS_libxendevicemodel += $(LDLIBS_libxentoollog) $(LDLIBS_libxentoolcore) $(LDLIBS_libxencall)
+
+LDLIBS_libxenhypfs += $(LDLIBS_libxentoollog) $(LDLIBS_libxentoolcore) $(LDLIBS_libxencall)
+
 # code which compiles against libxenctrl get __XEN_TOOLS__ and
 # therefore sees the unstable hypercall interfaces.
 CFLAGS_libxenctrl += -D__XEN_TOOLS__
 
+LDLIBS_libxenctrl += $(LDLIBS_libxentoollog) $(LDLIBS_libxenevtchn) $(LDLIBS_libxengnttab) $(LDLIBS_libxencall) $(LDLIBS_libxenforeignmemory) $(LDLIBS_libxendevicemodel)
+
+LDLIBS_libxenguest += $(LDLIBS_libxenevtchn)
+
+LDLIBS_libxenstore += $(LDLIBS_libxentoolcore)
 ifeq ($(CONFIG_Linux),y)
 xenlibs-ldlibs-store := -ldl
 endif
@@ -141,6 +158,10 @@ CFLAGS += -Werror
 endif
 endif
 
+LDLIBS_libxenstat  += $(LDLIBS_libxenctrl) $(LDLIBS_libxenstore)
+
+LDLIBS_libxenvchan +=  $(LDLIBS_libxentoollog) $(LDLIBS_libxenstore) $(LDLIBS_libxenevtchn) $(LDLIBS_libxengnttab)
+
 ifeq ($(debug),y)
 # Use -Og if available, -O0 otherwise
 dbg_opt_level := $(call cc-option,$(CC),-Og,-O0)
@@ -150,6 +171,10 @@ PY_CFLAGS += $(PY_NOOPT_CFLAGS)
 else
 CFLAGS += -O2 -fomit-frame-pointer
 endif
+
+LDLIBS_libxenlight += $(LDLIBS_libxenctrl) $(LDLIBS_libxenstore) $(LDLIBS_libxenhypfs)
+
+LDLIBS_libxlutil += $(LDLIBS_libxenlight)
 
 CFLAGS += -D__XEN_INTERFACE_VERSION__=__XEN_LATEST_INTERFACE_VERSION__
 
