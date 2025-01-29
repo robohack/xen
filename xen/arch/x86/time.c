@@ -1090,6 +1090,9 @@ static u64 __init init_platform_timer(void)
                    (rc == 0) ? "Could not initialise" : "Unrecognised",
                    opt_clocksource);
     }
+    else if ( !strcmp(opt_clocksource, "tsc") )
+        printk("NOTICE: clocksource='%s' may be tried later\n",
+               opt_clocksource);
 
     if ( rc <= 0 )
     {
@@ -2528,6 +2531,9 @@ static int __init cf_check verify_tsc_reliability(void)
             return 0;
         }
     }
+    else if ( !strcmp(opt_clocksource, "tsc") )
+        printk("NOTICE: unable to set clocksource='tsc', TSC_RELIABLE not available\n");
+
 
     /*
      * Re-run the TSC writability check if it didn't run to completion, as
